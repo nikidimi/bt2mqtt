@@ -1,0 +1,10 @@
+mqtt:
+  username: user
+  password: pass
+  host: 127.0.0.1
+
+devices:
+  - mac: "00:11:22:33:44:55"
+    type: "eq3"
+  - mac: "11:22:33:44:55:66"
+    type: "sygonix"
