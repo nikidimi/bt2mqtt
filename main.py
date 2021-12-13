@@ -3,6 +3,7 @@ import json
 import time
 import logging
 import yaml
+import importlib
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -18,12 +19,10 @@ def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
 
 def create_thermo(device):
-    if device["type"] == "eq3":
-        from devices.eq3 import Eq3Thermo 
-        return Eq3Thermo(device["mac"])
-    elif device["type"] == "sygonix":
-        from devices.sygonix import SygonixThermo
-        return SygonixThermo(device["mac"])
+    device_module = importlib.import_module(f"devices.{device['type']}")
+    device_class = getattr(device_module, device["type"].title())
+    return device_class(device)
+
 
 if __name__ == '__main__':
     stream = open("config.yaml", 'r')

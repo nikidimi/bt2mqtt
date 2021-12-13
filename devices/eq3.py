@@ -2,10 +2,10 @@ from eq3bt import Thermostat
 from .base_thermo import BaseThermo
 
 
-class Eq3Thermo(BaseThermo):
-    def __init__(self, mac):
-        self._conn = Thermostat(mac)
-        super().__init__(mac)
+class Eq3(BaseThermo):
+    def __init__(self, config):
+        self._conn = Thermostat(config["mac"])
+        super().__init__(config["mac"])
 
     @property
     def supports_current_temp(self):
