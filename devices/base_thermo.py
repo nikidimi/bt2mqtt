@@ -1,4 +1,5 @@
 import time
+import json
 from threading import Lock
 
 
@@ -49,7 +50,7 @@ class BaseThermo:
 
         return data
 
-    def update(self):
+    def __update_device(self):
         self._current_mode = None
         self._current_temp = None
         self._current_target_temp = None
@@ -71,6 +72,14 @@ class BaseThermo:
             self._last_update = time.time()
             with self._target_temp_lock:
                 self._target_temp = None
+
+    def update_if_necessary(self, client):
+        if self.should_update():
+            self.__update_device()
+            client.publish(self.get_channel_prefix() + "mode", payload=self.mode, qos=0, retain=False)
+            client.publish(self.get_channel_prefix() + "target_temp", payload=self.target_temp, qos=0, retain=False)
+            client.publish(self.get_channel_prefix() + "current_temp", payload=self.current_temp, qos=0, retain=False)
+
 
 
     def should_update(self):
@@ -96,3 +105,12 @@ class BaseThermo:
     def get_id(self):
         return self._id
 
+    def on_message(self, lient, userdata, message):
+        self.target_temp = float(message.payload)
+        print(message.topic+" "+str(message.payload))
+
+    def on_connect(self, client):
+        client.subscribe(self.get_channel_prefix() + "target_temp/set")
+        client.message_callback_add(self.get_channel_prefix() + "target_temp/set", self.on_message)
+        client.publish("homeassistant/climate/" + self.get_id() + "/thermo-test-ht100/config", payload=json.dumps(self.get_data()), qos=0, retain=False)
+        
