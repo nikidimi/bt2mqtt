@@ -13,3 +13,5 @@ devices:
     type: "rf433"
     delay: 0.0003
     repeat_delay: 0.012
+  - name: "hpma115s0"
+    type: "hpma115s0"
