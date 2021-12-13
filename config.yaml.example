@@ -8,3 +8,8 @@ devices:
     type: "eq3"
   - mac: "11:22:33:44:55:66"
     type: "sygonix"
+  - name: "remote"
+    code: "111111"
+    type: "rf433"
+    delay: 0.0003
+    repeat_delay: 0.012
