@@ -113,5 +113,5 @@ class BaseThermo:
     def on_connect(self, client):
         client.subscribe(self.get_channel_prefix() + "target_temp/set")
         client.message_callback_add(self.get_channel_prefix() + "target_temp/set", self.on_message)
-        client.publish("homeassistant/climate/" + self.get_id() + "/thermo-test-ht100/config", payload=json.dumps(self.get_data()), qos=0, retain=False)
+        client.publish("homeassistant/climate/" + self.get_id() + "/config", payload=json.dumps(self.get_data()), qos=0, retain=False)
         
