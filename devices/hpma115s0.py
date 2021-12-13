@@ -21,10 +21,15 @@ class Hpma115S0:
         data = {     
             "unique_id": self._id + "-pm25",
             "state_topic": self.get_channel_prefix() + "pm25", 
+            "name": "PM 2.5",
+            "device_class": "pm25",
+            "unit_of_measurement": "μg/m3",
             "device":{
                 "identifiers":[
                     self._id,
                 ],
+                "manufacturer": "Honeywell",
+                "model": "HPMA115S0-XXX"
             }
         }
         return data
@@ -34,6 +39,9 @@ class Hpma115S0:
         data = {     
             "unique_id": self._id + "-pm10",
             "state_topic": self.get_channel_prefix() + "pm10", 
+            "name": "PM 10",
+            "device_class": "pm10",
+            "unit_of_measurement": "μg/m3",
             "device":{
                 "identifiers":[
                     self._id,
