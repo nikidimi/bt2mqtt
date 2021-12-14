@@ -56,10 +56,11 @@ class BaseThermo:
         self._current_temp = None
         self._current_target_temp = None
 
-        with self._target_temp_lock:
-            if self._target_temp is not None:
-                self._conn.target_temperature  = self._target_temp
+
         try:
+            with self._target_temp_lock:
+                if self._target_temp is not None:
+                    self._conn.target_temperature  = self._target_temp
             self._conn.update()
         except (BrokenPipeError, btle.BTLEDisconnectError):
             pass
