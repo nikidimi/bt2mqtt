@@ -1,6 +1,7 @@
 import json
 import time
 from bluepy.btle import Scanner, DefaultDelegate
+from bluepy import btle
 
 
 class Lywsd03Mmc:
@@ -82,15 +83,18 @@ class Lywsd03Mmc:
 
                             self.ready = True
 
-            delegate = ScanDelegate(self)
-            scanner = Scanner().withDelegate(delegate)
-            scanner.clear()
-            scanner.start()
-            for i in range(10):
-                scanner.process(10)
-                if delegate.ready:
-                    break
-            scanner.stop()
+            try:
+                delegate = ScanDelegate(self)
+                scanner = Scanner().withDelegate(delegate)
+                scanner.clear()
+                scanner.start()
+                for i in range(10):
+                    scanner.process(10)
+                    if delegate.ready:
+                        break
+                scanner.stop()
+            except (BrokenPipeError, btle.BTLEDisconnectError):
+                pass
 
 
     def should_update(self):
