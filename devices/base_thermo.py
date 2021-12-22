@@ -62,7 +62,7 @@ class BaseThermo:
                 if self._target_temp is not None:
                     self._conn.target_temperature  = self._target_temp
             self._conn.update()
-        except (BrokenPipeError, btle.BTLEDisconnectError):
+        except (BrokenPipeError, btle.BTLEDisconnectError, UnicodeDecodeError):
             pass
         else:
             self._current_mode = "heat"
